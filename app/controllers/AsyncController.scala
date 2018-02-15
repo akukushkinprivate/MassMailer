@@ -5,6 +5,7 @@ import javax.inject._
 import akka.actor.ActorSystem
 import play.api.mvc._
 
+import scala.collection.mutable
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future, Promise}
 
@@ -26,6 +27,8 @@ import scala.concurrent.{ExecutionContext, Future, Promise}
 @Singleton
 class AsyncController @Inject()(cc: ControllerComponents, actorSystem: ActorSystem)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
+  private val statues = new mutable.HashMap()
+
   /**
    * Creates an Action that returns a plain text message after a delay
    * of 1 second.
@@ -45,5 +48,4 @@ class AsyncController @Inject()(cc: ControllerComponents, actorSystem: ActorSyst
     }(actorSystem.dispatcher) // run scheduled tasks using the actor system's dispatcher
     promise.future
   }
-
 }
