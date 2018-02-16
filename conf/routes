@@ -4,6 +4,5 @@
 # ~~~~
 
 PUT        /dispatch/create           controllers.DispatchController.create
-
 GET        /dispatch/getStatus        controllers.DispatchController.getStatus
       

@@ -1,22 +1,23 @@
 package actors
 
+import javax.inject.Inject
+
 import akka.actor.{Actor, Props}
+import models.{DispatchRepository, DispatchStatus}
 
 object SaveDispatchActor {
-  private var autoIncrementedId = 0l
 
   def props: Props = Props[SaveDispatchActor]
 
-  case class SaveDispatch()
+  case class InsertOrUpdateDispatchStatus(dispatchStatus: DispatchStatus)
+
 }
 
-class SaveDispatchActor extends Actor {
+class SaveDispatchActor @Inject()(dispatchRepository: DispatchRepository) extends Actor {
 
   import SaveDispatchActor._
 
   override def receive: Receive = {
-    case SaveDispatch =>
-      autoIncrementedId += 1
-      sender ! autoIncrementedId
+    case InsertOrUpdateDispatchStatus(dispatchStatus: DispatchStatus) => sender ! dispatchRepository.insertOrUpdate(dispatchStatus)
   }
 }
